@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class AppComponent {
 
-  title = 'test!';
+  title = 'Angular + Reatful + Gin + Sqlite template';
 
   public members;
   public member_name;
@@ -64,7 +64,7 @@ export class AppComponent {
   }
 
   deleteMember(member) {
-    if (confirm("Are you sure you want to delete " + member.name + "?")) {
+    if (confirm("Are you sure you want to delete " + member.Name + "?")) {
       this._demoService.deleteMember(member).subscribe(
         data => {
           // refresh the list

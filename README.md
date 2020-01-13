@@ -1,5 +1,9 @@
 # `Angular + Reatful + Gin +  Sqlite` template
 
+## Aim
+
+The most **basic** code to show the **full** architecture
+
 ## Application Architecture
 
 ```diagram
@@ -16,19 +20,27 @@
        ||------→ | Caddy |
        ||        ---------
        ↓|proxy       ↑
-    --------     -------    ---------    --------
-    | View |     | API | ←  | Model | ←  | Data |
-    --------     -------    ---------    --------
-        ↓            ↓          ↓            ↓
-    -----------  -----------  -------  ----------
-    | Angular |  | Restful |  | Gin |  | Sqlite |
-    -----------  -----------  -------  ----------
-        ↓                        ↓
-    --------------           ----------
-    | TypeScript |           | Golang |
-    --------------           ----------
+    ╔══════╗     -------    ╔═══════╗   --------   ╔══════════╗
+    ║ View ║  →  | API | ←  ║ Model ║ ← | Data | ← ║ Analysis ║
+    ╚══════╝     -------    ╚═══════╝   --------   ╚══════════╝
+        ↓            ↓          ↓           ↓          ↓
+    -----------  -----------  -------  ----------   ----------
+    | Angular |  | Restful |  | Gin |  | Sqlite |   | Pandas |
+    -----------  -----------  -------  ----------   ----------
+        ↓                        ↓                      ↓
+    --------------           ----------             ----------
+    | TypeScript |           | Golang |             | Python |
+    --------------           ----------             ----------
 
 ```
+## Fetures
+
+- Angular 5.2.0
+- golang 1.10
+- caddy 0.10.10
+- Echarts 4.0.1
+- python 3.6.4
+- pipenv 8.3.2
 
 ## Prerequisites
 
@@ -37,6 +49,7 @@
 > Node, npm
 
 ```bash
+cd ./client
 npm install --global @angular/cli
 ```
 
@@ -55,13 +68,19 @@ go get github.com/jinzhu/gorm/dialects/sqlite
 curl https://getcaddy.com | bash -s http.git,http.ratelimit
 ```
 
+> Python, pandas
+
+```bash
+pip install pipenv
+cd ./server/analysis
+pipenv install --python 3.6
+```
+
 ## Compile and Run
 
 Tested on linux machine only!
 
 > Run on development environment
-
-Compile and Run project
 
 ```bash
 # make dev
@@ -89,11 +108,31 @@ caddy -conf ./server/caddy/Caddyfile
 
 Open `http://0.0.0.0:8888/`
 
+## Analysis Data
+
+```bash
+cd ./server/analysis
+
+# do something...
+```
+
 ## Changelog
 
 - [x] use gin to route both static page and API
 - [x] split router in differnt files ([ref](https://stackoverflow.com/questions/47115731/how-to-split-my-resources-into-multiply-files))
 - [x] expose the API to the client
 - [x] use caddy Proxy for /index.html and /api
-- [ ] write a makefile
+- [x] write a makefile
+- [ ] Add Wiki page
+- [x] Add nested component in Angular client
+- [ ] Add UI (Bootstrap or Antd?)
+- [ ] Use python to manipulate data layer
+- [x] change models directory structure in server
+- [x] Add RxJS observer of API to plot cell data
+- [x] Add python type hinting
+
+## ISSUE
+
+- Gin model is case insensitive, but Angular is case sensitive. (May raise error)
+- 'index' is meaningful in gorm, thus `where(index = ?)` trigger a bug. (database table column name)
 
